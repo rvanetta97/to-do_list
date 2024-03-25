@@ -28,7 +28,8 @@ Delete Tasks: To delete a task, click on the delete button associated with the t
 
 Organize Tasks: Drag tasks between different status lanes to organize them according to their status (e.g., To-Do, In Progress, Done).
 
-Code Overview
+Code Overview:
+
 The application consists of the following main components:
 
 HTML: Contains the structure of the web page, including input fields for task description and due date, as well as containers for displaying tasks and status lanes.
@@ -37,8 +38,10 @@ CSS: Provides styling for the user interface elements, including task cards, sta
 
 JavaScript: Implements the application logic, including functions for adding tasks, deleting tasks, and handling drag-and-drop functionality.
 
-License
+License:
+
 This project is licensed under the MIT License.
 
-Conclusion
+Conclusion:
+
 The To-Do List application provides a simple and efficient way to manage tasks and stay organized. Whether you're working on personal projects or collaborating with a team, the application offers intuitive features for task management.
