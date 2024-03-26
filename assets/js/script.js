@@ -29,24 +29,24 @@ function handleAddTask() {
 }
 
 function createTaskCard(task) {
-    var newTaskCard = $("<div class='task-card'></div>");
+    var TaskCard = $("<div class='task-card'></div>");
 
     const taskinput = document.createElement('span');
     taskinput.textContent = task.taskinput;
-    newTaskCard.append(taskinput);
+    TaskCard.append(taskinput);
 
     const duedate = document.createElement('span');
     duedate.textContent = task.duedate;
-    newTaskCard.append(duedate);
+    TaskCard.append(duedate);
 
     const deletebtn = document.createElement('button');
     deletebtn.textContent = "Delete";
     deletebtn.className = "delete-btn";
-    newTaskCard.append(deletebtn);
+    TaskCard.append(deletebtn);
 
-    $("#todo-cards").append(newTaskCard);
+    $("#todo-cards").append(TaskCard);
 
-    newTaskCard.draggable({
+        TaskCard.draggable({
         revert: "invalid", 
         helper: "clone", 
         opacity: 0.7 
@@ -73,7 +73,7 @@ function renderTaskList(taskList) {
 function handleDrop(event, ui) {
     var draggedElement = ui.draggable;
     var newLocationId = $(this).attr('id');
-    var taskId = draggedElement.data('task');
+    var taskId = draggedElement.data('taskID');
     taskList.forEach(task => {
         if (task.taskId == taskId) {
             task.status = newLocationId;
@@ -98,6 +98,7 @@ $(document).ready(function () {
         });
 
         $('.status-lane').droppable({
+            accept: ".task-card",
             drop: handleDrop
         });
     });
