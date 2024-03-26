@@ -4,42 +4,32 @@ const buttonEl = document.querySelector('#taskbutton');
 
 function generateTaskId() {
     return 'id_' + nextId++;
+    localStorage.setItem("nextId", nextId);
 }
-
+submit.addEventListener('click', handleAddTask);
 function handleAddTask() {
-    buttonEl.addEventListener('click', function(e) {
-        e.preventDefault();
-        var taskinput = $('#taskinput').val();
-        var duedate = $('#duedate').val();
-        var taskId = generateTaskId();
+    var taskinput = $('#taskinput').val();
+    var duedate = $('#duedate').val();
+    var taskId = generateTaskId();
 
-        var task = {
-            taskId: taskId,
-            taskinput: taskinput,
-            duedate: duedate
-        };
-        console.log (task)
-        
-        taskList.push(task);
-        renderTaskList(taskList);
-        createTaskCard(task);
-       
-        const taskListJSON = JSON.stringify(taskList);
-        localStorage.setItem("taskList", taskListJSON);
-        console.log(taskList)
+    var task = {
+        taskId: taskId,
+        taskinput: taskinput,
+        duedate: duedate
+    };
+    taskList.push(task);
+    renderTaskList(taskList);
+    createTaskCard(task);
 
+    const taskListJSON = JSON.stringify(taskList);
+    localStorage.setItem("taskList", taskListJSON);
 
-        $('#duedate').val('');
-        $('#taskinput').val('');
-    });
+    $('#duedate').val('');
+    $('#taskinput').val('');
 }
-function renderTaskList(taskList) {
-    taskList.forEach(task => {
-        createTaskCard(task);
-    });
-}
+
 function createTaskCard(task) {
-    var newTaskCard = $("<div class='task'></div>");
+    var newTaskCard = $("<div class='task-card'></div>");
 
     const taskinput = document.createElement('span');
     taskinput.textContent = task.taskinput;
@@ -55,17 +45,29 @@ function createTaskCard(task) {
     newTaskCard.append(deletebtn);
 
     $("#todo-cards").append(newTaskCard);
+
+    newTaskCard.draggable({
+        revert: "invalid", 
+        helper: "clone", 
+        opacity: 0.7 
+    });
                 
 }
 
-function handleDeleteTask() {
-    $(document).on('click', '.delete-btn', function () {
-        var taskId = $(this).closest('.task').data('task');
-        $(this).closest('.task').remove();
-        taskList = taskList.filter(task => task.taskId !== taskId);
-        localStorage.setItem('taskList', JSON.stringify(taskList));
+function renderTaskList(taskList) {
+    taskList.forEach(task => {
+        createTaskCard(task);
     });
+    function handleDeleteTask() {
+        $(document).on('click', '.delete-btn', function () {
+            var taskId = task.taskId;
+            $(this).closest('.task').remove();
+            taskList = taskList.filter(task => task.taskId !== taskId);
+            localStorage.setItem('taskList', JSON.stringify(taskList));
+        });
+    }
 }
+
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
@@ -73,7 +75,7 @@ function handleDrop(event, ui) {
     var newLocationId = $(this).attr('id');
     var taskId = draggedElement.data('task');
     taskList.forEach(task => {
-        if (task.taskId === taskId) {
+        if (task.taskId == taskId) {
             task.status = newLocationId;
         }
     });
@@ -85,9 +87,16 @@ $(document).ready(function () {
         $('.datepicker').datepicker({
             dateFormat: 'yy-mm-dd'
         });
-        $('#button').on('click', handleAddTask);
-        handleDeleteTask();
-        $('.task').draggable();
+
+        //$('#button').on('click', handleAddTask);
+        //handleDeleteTask();
+
+        $('.task-card').draggable({
+            revert: "invalid", 
+            helper: "clone", 
+            opacity: 0.7 
+        });
+
         $('.status-lane').droppable({
             drop: handleDrop
         });
