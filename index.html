@@ -21,14 +21,13 @@
     <p class="lead">A simple Kanban board for task management</p>
   </header>
   <div class="container">
-    <form class="text-center mb-5", id="task-form">
+    <form class="text-center mb-5", id="taskform">
       <input type="text" class="form-input" id="taskinput" name="task-input" placeholder="Enter your task" />
       <input type="text" id="duedate" class="datepicker" placeholder="Enter your task due date here" />
-      <div class="text-center mb-5">
-        <button class="btn btn-success" id="taskbutton" data-bs-toggle="modal" data-bs-target="#formModal">Add Task</button>
-      </div>
     </form>
-   
+    <div class="text-center mb-5">
+      <button class="btn btn-success" id="taskbutton" data-bs-toggle="modal" data-bs-target="#formModal">Add Task</button>
+    </div>
     <!-- Todo: Create a modal with a form to add tasks -->
     <div class="row swim-lanes text-center justify-content-between">
       <div class="col-12 col-lg-4 d-flex">

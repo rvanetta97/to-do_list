@@ -1,50 +1,69 @@
-
-let taskList = JSON.parse(localStorage.getItem("tasks"));
+let taskList = JSON.parse(localStorage.getItem("taskList"));
 let nextId = JSON.parse(localStorage.getItem("nextId"));
+const buttonEl = document.querySelector('#taskbutton');
 
 function generateTaskId() {
-    return 'id_' + Math.random().toString(36).substring(2, 8);
+    return 'id_' + nextId++;
 }
 
-function createTaskCard(task) {
-    var newTaskCard = $("<div></div>");
-    newTaskCard.append("<p>" + task.taskinput + "</p>", "<p>" + task.duedate + "</p>");
-    $("#to-do").append(newTaskCard);
-}
-
-function renderTaskList(taskList) {
-    taskList.forEach(task => {
-        createTaskCard(task);
-    });
-}
 function handleAddTask() {
-    $('#task-form').submit(function (e) {
+    buttonEl.addEventListener('click', function(e) {
         e.preventDefault();
         var taskinput = $('#taskinput').val();
         var duedate = $('#duedate').val();
         var taskId = generateTaskId();
+
         var task = {
             taskId: taskId,
             taskinput: taskinput,
             duedate: duedate
         };
+        console.log (task)
+        
         taskList.push(task);
+        renderTaskList(taskList);
         createTaskCard(task);
+       
+        const taskListJSON = JSON.stringify(taskList);
+        localStorage.setItem("taskList", taskListJSON);
+        console.log(taskList)
+
+
         $('#duedate').val('');
         $('#taskinput').val('');
-        localStorage.setItem("tasks", JSON.stringify(taskList));
-        var newtask = $("<div></div>");
-            newtask.append("<p>" + task-input + "</p>", "<p>" + duedate + "</p>",);
-            $("#to-do").append(newtask);
     });
+}
+function renderTaskList(taskList) {
+    taskList.forEach(task => {
+        createTaskCard(task);
+    });
+}
+function createTaskCard(task) {
+    var newTaskCard = $("<div class='task'></div>");
+
+    const taskinput = document.createElement('span');
+    taskinput.textContent = task.taskinput;
+    newTaskCard.append(taskinput);
+
+    const duedate = document.createElement('span');
+    duedate.textContent = task.duedate;
+    newTaskCard.append(duedate);
+
+    const deletebtn = document.createElement('button');
+    deletebtn.textContent = "Delete";
+    deletebtn.className = "delete-btn";
+    newTaskCard.append(deletebtn);
+
+    $("#todo-cards").append(newTaskCard);
+                
 }
 
 function handleDeleteTask() {
-    $('.delete-btn').click(function () {
+    $(document).on('click', '.delete-btn', function () {
         var taskId = $(this).closest('.task').data('task');
         $(this).closest('.task').remove();
         taskList = taskList.filter(task => task.taskId !== taskId);
-        localStorage.setItem('tasks', JSON.stringify(taskList));
+        localStorage.setItem('taskList', JSON.stringify(taskList));
     });
 }
 
@@ -58,7 +77,7 @@ function handleDrop(event, ui) {
             task.status = newLocationId;
         }
     });
-    localStorage.setItem("tasks", JSON.stringify(taskList));
+    localStorage.setItem("taskList", JSON.stringify(taskList));
 }
 
 $(document).ready(function () {
